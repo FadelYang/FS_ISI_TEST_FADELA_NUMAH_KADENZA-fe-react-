@@ -6,6 +6,7 @@ import TodoCard from "./TodoCard";
 const Home = () => {
   const [completedTodos, setCompletedTodos] = useState<Todo[]>([]);
   const [onGoingTodos, setOngoingTodos] = useState<Todo[]>([]);
+  const [isNeedFetch, setIsNeedFetch] = useState(false);
 
   const getTodos = async (isCompeted: boolean) => {
     const url = `${
@@ -33,6 +34,13 @@ const Home = () => {
     getTodos(false);
   }, []);
 
+  useEffect(() => {
+    if (isNeedFetch) {
+      getTodos(true);
+      getTodos(false);
+    }
+  }, [isNeedFetch])
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col justify-center max-w-[580px] w-full px-4">
@@ -52,7 +60,8 @@ const Home = () => {
                     setOngoingTodos,
                     onGoingTodos,
                     completedTodos,
-                    setCompletedTodos
+                    setCompletedTodos,
+                    setIsNeedFetch,
                   }}
                 />
               ))}
@@ -71,7 +80,8 @@ const Home = () => {
                     setOngoingTodos,
                     onGoingTodos,
                     completedTodos,
-                    setCompletedTodos
+                    setCompletedTodos,
+                    setIsNeedFetch,
                   }}
                 />
               ))}

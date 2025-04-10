@@ -18,7 +18,7 @@ const PageTitle = ({ props }: any) => {
       is_completed: false,
       created_at: new Date().toISOString(),
     };
-    setOngoingTodos([data, ...onGoingTodos]);
+    setOngoingTodos([...onGoingTodos, data]);
     try {
       const response = await fetch(url, {
         method: "POST",

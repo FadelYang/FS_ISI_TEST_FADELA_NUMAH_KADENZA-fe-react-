@@ -11,6 +11,7 @@ const TodoCard = ({ props }: any) => {
     onGoingTodos,
     completedTodos,
     setCompletedTodos,
+    setIsNeedFetch,
   } = props;
 
   const deleteTodo = async (todoId: number) => {
@@ -63,20 +64,7 @@ const TodoCard = ({ props }: any) => {
 
       alert("Success changing todo status");
 
-      if (updatedTodoData.is_completed) {
-        setOngoingTodos((prevTodos: Todo[]) =>
-          prevTodos.filter((todo: Todo) => todo.id !== todoId)
-        );
-        setCompletedTodos((prevCompletedTodos: Todo[]) => [
-          updatedTodoData,
-          ...prevCompletedTodos,
-        ]);
-      } else {
-        setCompletedTodos((prevCompletedTodos: Todo[]) =>
-          prevCompletedTodos.filter((todo: Todo) => todo.id !== todoId)
-        );
-        setOngoingTodos((prevTodos: Todo[]) => [updatedTodoData, ...prevTodos]);
-      }
+      setIsNeedFetch(true);
     } catch (error) {
       console.error("Error changing todo status:", error);
       alert("Something went wrong, failed to change todo status");
@@ -97,7 +85,7 @@ const TodoCard = ({ props }: any) => {
           <X size={15} />
         </div>
         <div
-          className={`border-2 border-black rounded-full ${
+          className={`border-2 border-black rounded-full hover:cursor-pointer ${
             !is_completed ? "bg-white w-5 h-5" : "bg-[#D0D0D0]"
           }`}
           onClick={() =>
