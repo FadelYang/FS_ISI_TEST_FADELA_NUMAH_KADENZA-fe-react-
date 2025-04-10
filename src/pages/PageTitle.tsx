@@ -40,6 +40,7 @@ const PageTitle = ({ props }: any) => {
         throw new Error(`Failed to create new todo: ${response}`);
       }
 
+      setIsNeedFetch(true);
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -51,10 +52,10 @@ const PageTitle = ({ props }: any) => {
     if (!isConfirmed) {
       return;
     }
-    console.log({ selectedTodo });
 
     const todoId = Number(selectedTodo.id);
-    const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoId}`;
+    
+    const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${selectedTodo.id}`;
     const data: Todo = {
       ...selectedTodo,
       title: todoTitle,
@@ -76,6 +77,7 @@ const PageTitle = ({ props }: any) => {
       setIsLoading(false);
       setIsUpdateButtonShow(false);
       setIsNeedFetch(true);
+      setTodoTitle("")
     } catch (error) {
       console.error(error);
     }

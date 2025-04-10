@@ -37,12 +37,11 @@ const TodoCard = ({ props }: any) => {
     const isConfirmed = confirm("are you sure want to delete this todo?");
 
     if (!isConfirmed) return;
-    console.log({todoData, todoId});
     
     if (todoId !== todoData.id) return;
 
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoId}`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoData.id}`;
 
       const response = await fetch(url, {
         method: "DELETE",
@@ -54,10 +53,10 @@ const TodoCard = ({ props }: any) => {
 
       if (todoData.is_completed) {
         setCompletedTodos(
-          completedTodos.filter((todo: Todo) => todo.id !== id)
+          completedTodos.filter((todo: Todo) => todo.id !== todoData.id)
         );
       } else {
-        setOngoingTodos(onGoingTodos.filter((todo: Todo) => todo.id !== id));
+        setOngoingTodos(onGoingTodos.filter((todo: Todo) => todo.id !== todoData.id));
       }
       alert("Success deleted todo");
     } catch (error) {
@@ -67,9 +66,10 @@ const TodoCard = ({ props }: any) => {
   };
 
   const changeTodoCompleteStatus = async (todoId: number, todoData: Todo) => {
-    const isConfirmed = confirm("Are you sure?");
+    const isConfirmed = confirm("Are you sure?");    
 
     if (!isConfirmed) return;
+    
 
     const updatedTodoData = {
       ...todoData,
@@ -77,7 +77,7 @@ const TodoCard = ({ props }: any) => {
     };
 
     try {
-      const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoId}`;
+      const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoData.id}`;
       const response = await fetch(url, {
         method: "PUT",
         headers: {
@@ -110,7 +110,7 @@ const TodoCard = ({ props }: any) => {
               setTodoTitle(title);
               setIsUpdateButtonShow(true);
               setSelectedTodo({
-                id: id,
+                id,
                 title,
                 is_completed,
                 created_at,
@@ -127,7 +127,7 @@ const TodoCard = ({ props }: any) => {
           className="border-2 border-black rounded-full hover:cursor-pointer"
           onClick={() =>
             deleteTodo(id, {
-              id,
+              id: id,
               title,
               is_completed,
               created_at,
@@ -142,6 +142,7 @@ const TodoCard = ({ props }: any) => {
           }`}
           onClick={() =>
             changeTodoCompleteStatus(id, {
+              id: id,
               title,
               is_completed,
               created_at,
