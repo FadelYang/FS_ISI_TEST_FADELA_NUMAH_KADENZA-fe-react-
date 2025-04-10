@@ -38,6 +38,7 @@ const Home = () => {
     if (isNeedFetch) {
       getTodos(true);
       getTodos(false);
+      setIsNeedFetch(false)
     }
   }, [isNeedFetch])
 
