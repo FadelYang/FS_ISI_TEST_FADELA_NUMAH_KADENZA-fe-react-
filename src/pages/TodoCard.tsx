@@ -1,6 +1,22 @@
 import { X, Check } from "lucide-react";
 import { Todo } from "../types/Todo";
 
+const formatDateTime = (dateTime: Date) => {
+  const date = new Date(dateTime);
+  const formatted = date
+    .toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replace(",", "");
+
+  return formatted;
+};
+
 const TodoCard = ({ props }: any) => {
   const {
     id,
@@ -36,9 +52,7 @@ const TodoCard = ({ props }: any) => {
           completedTodos.filter((todo: Todo) => todo.id !== id)
         );
       } else {
-        setOngoingTodos(
-          onGoingTodos.filter((todo: Todo) => todo.id !== id)
-        );
+        setOngoingTodos(onGoingTodos.filter((todo: Todo) => todo.id !== id));
       }
       alert("Success deleted todo");
     } catch (error) {
@@ -84,7 +98,7 @@ const TodoCard = ({ props }: any) => {
     <div className="flex justify-between bg-[#D0D0D0] rounded-[10px] pt-4 px-3 pb-3">
       <div className="flex flex-col gap-2">
         <p>{title}</p>
-        <p>{created_at}</p>
+        <p>{formatDateTime(created_at)}</p>
       </div>
       <div className="flex items-center gap-1">
         <div
