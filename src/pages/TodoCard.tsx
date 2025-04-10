@@ -14,10 +14,11 @@ const TodoCard = ({ props }: any) => {
     setIsNeedFetch,
   } = props;
 
-  const deleteTodo = async (todoId: number) => {
+  const deleteTodo = async (todoId: number, todoData: Todo) => {
     const isConfirmed = confirm("are you sure want to delete this todo?");
 
     if (!isConfirmed) return;
+    if (todoId !== todoData.id) return;
 
     try {
       const url = `${import.meta.env.VITE_BACKEND_URL}/todos/${todoId}`;
@@ -30,7 +31,15 @@ const TodoCard = ({ props }: any) => {
         throw new Error(`Failed to delete todo ${response}`);
       }
 
-      setOngoingTodos(onGoingTodos.filter((todo: Todo) => todo.id !== todoId));
+      if (todoData.is_completed) {
+        setCompletedTodos(
+          completedTodos.filter((todo: Todo) => todo.id !== id)
+        );
+      } else {
+        setOngoingTodos(
+          onGoingTodos.filter((todo: Todo) => todo.id !== id)
+        );
+      }
       alert("Success deleted todo");
     } catch (error) {
       console.error(error);
@@ -80,7 +89,13 @@ const TodoCard = ({ props }: any) => {
       <div className="flex items-center gap-1">
         <div
           className="border-2 border-black rounded-full hover:cursor-pointer"
-          onClick={() => deleteTodo(id)}
+          onClick={() =>
+            deleteTodo(id, {
+              title,
+              is_completed,
+              created_at,
+            })
+          }
         >
           <X size={15} />
         </div>
