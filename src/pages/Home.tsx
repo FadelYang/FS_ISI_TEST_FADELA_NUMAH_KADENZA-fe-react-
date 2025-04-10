@@ -65,6 +65,7 @@ const Home = () => {
                   }}
                 />
               ))}
+              {onGoingTodos.length !== 0 ? <></> : <p className='text-center'>no data</p>}
             </div>
           </div>
           <div className="flex flex-col justify-start w-full gap-2">
@@ -85,6 +86,7 @@ const Home = () => {
                   }}
                 />
               ))}
+              {completedTodos.length !== 0 ? <></> : <p className='text-center'>no data</p>}
             </div>
           </div>
         </div>
