@@ -1,4 +1,4 @@
-import { X, Check } from "lucide-react";
+import { X, Check, Pencil } from "lucide-react";
 import { Todo } from "../types/Todo";
 
 const formatDateTime = (dateTime: Date) => {
@@ -28,12 +28,17 @@ const TodoCard = ({ props }: any) => {
     completedTodos,
     setCompletedTodos,
     setIsNeedFetch,
+    setTodoTitle,
+    setIsUpdateButtonShow,
+    setSelectedTodo,
   } = props;
 
   const deleteTodo = async (todoId: number, todoData: Todo) => {
     const isConfirmed = confirm("are you sure want to delete this todo?");
 
     if (!isConfirmed) return;
+    console.log({todoData, todoId});
+    
     if (todoId !== todoData.id) return;
 
     try {
@@ -97,7 +102,24 @@ const TodoCard = ({ props }: any) => {
   return (
     <div className="flex justify-between bg-[#D0D0D0] rounded-[10px] pt-4 px-3 pb-3">
       <div className="flex flex-col gap-2">
-        <p>{title}</p>
+        <div className="flex gap-1 items-center">
+          <p>{title}</p>
+          <div
+            className="hover:cursor-pointer text-gray-500 hover:text-gray-700"
+            onClick={() => {
+              setTodoTitle(title);
+              setIsUpdateButtonShow(true);
+              setSelectedTodo({
+                id: id,
+                title,
+                is_completed,
+                created_at,
+              });
+            }}
+          >
+            <Pencil size={15} />
+          </div>
+        </div>
         <p>{formatDateTime(created_at)}</p>
       </div>
       <div className="flex items-center gap-1">
@@ -105,6 +127,7 @@ const TodoCard = ({ props }: any) => {
           className="border-2 border-black rounded-full hover:cursor-pointer"
           onClick={() =>
             deleteTodo(id, {
+              id,
               title,
               is_completed,
               created_at,
